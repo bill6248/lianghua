@@ -1,4 +1,4 @@
-# 多因子策略入门
+# 多因子策略
 
 
 '''
@@ -11,7 +11,7 @@
 
 def initialize(context):
     set_para()  # 1设置策参数
-    set_var()  # 2设置中间变量
+    set_var()  # 2设置变量
     set_con()  # 3设置回测条件
 
 
@@ -21,7 +21,7 @@ def set_para():
     g.f = 55  # 调仓频率
     g.yb = 63  # 样本长度
     g.N = 20  # 持仓数目
-    g.factors = ["pe_ratio", "turnover_ratio"]  # 用户选出来的因子
+    g.factors = ["pe_ratio", "turnover_ratio"]  
     # 因子等权重里1表示因子值越小越好，-1表示因子值越大越好
     g.weights = [[1], [-1]]
 
@@ -62,8 +62,7 @@ def before_trading_start(context):
 # 设置可行股票池
 def set_feasible_stocks(sl, days, context):
     # 得到是否停牌信息的dataframe，停牌的1，未停牌得0
-    suspened = get_price(list(sl), start_date=context.current_dt, end_date=context.current_dt, frequency='daily',
-                                 fields='paused')['paused'].T
+    suspened = get_price(list(sl), start_date=context.current_dt, end_date=context.current_dt, frequency='daily',fields='paused')['paused'].T
     # 过滤停牌股票 返回dataframe
     unsuspened = suspened.iloc[:, 0] < 1
     # 得到当日未停牌股票的代码list:
@@ -105,10 +104,9 @@ def handle_data(context, data):
     g.iftrade = False
 
 
-# 6
-# 获得卖出信号，并执行卖出操作
-# 输入：context, data，toBuy-list
-# 输出：none
+
+# 卖出
+
 def order_stock_sell(context, data, toBuy):
     # 如果现有持仓股票不在股票池，清空
     position = context.portfolio.positions.keys()
@@ -117,7 +115,7 @@ def order_stock_sell(context, data, toBuy):
             order_target(stock, 0)
 
 
-# 买入操作
+# 买入
 
 def order_stock_buy(context, data, toBuy):
     # 对于需要持仓的股票，按分配到的份额买入

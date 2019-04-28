@@ -22,9 +22,9 @@ def set_para():
     g.f = 55  # 调仓频率
     g.yb = 63  # 样本长度
     g.N = 20  # 持仓数目
-    g.factors = ["pe_ratio", "turnover_ratio"]  
+    g.factors = ["pe_ratio", "inc_net_profit_year_on_year"]  
     # 因子等权重里1表示因子值越小越好，-1表示因子值越大越好
-    g.weights = [[1], [-1]]
+    g.weights = [[1], [-0.2]]
 
 
 
